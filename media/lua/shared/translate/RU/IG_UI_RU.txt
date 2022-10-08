@@ -1,10 +1,10 @@
 IGUI_RU = {
     IGUI_SS_BARTITLE_HEALTH = "Здоровье",
-    IGUI_SS_BARTITLE_ENDURANCE = "Запас сил",
-    IGUI_SS_BARTITLE_HUNGER = "Голод",
+    IGUI_SS_BARTITLE_ENDURANCE = "Выносливость",
+    IGUI_SS_BARTITLE_HUNGER = "Сытость",
     IGUI_SS_BARTITLE_THIRST = "Жажда",
     IGUI_SS_BARTITLE_FATIGUE = "Усталость",
-    IGUI_SS_BARTITLE_HAPPY = "Счастливый",
+    IGUI_SS_BARTITLE_HAPPY = "Счастье",
     IGUI_SS_BARTITLE_BOREDOM = "Скука",
     IGUI_SS_BARTITLE_BODYTEMP = "Темп-ра тела",
     IGUI_SS_BARTITLE_BODYHEATGEN = "Отклик тела",
@@ -21,5 +21,5 @@ IGUI_RU = {
     IGUI_SS_BARTITLE_LIPIDS = "Жиры",
 
     IGUI_SS_BARTITLE_O_OPTION = "Параметры",
-    IGUI_SS_BARTITLE_O_VERTICAL = "вертикальный",
+    IGUI_SS_BARTITLE_O_VERTICAL = "Вертикально",
 }

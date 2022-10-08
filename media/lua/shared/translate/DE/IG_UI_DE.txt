@@ -1,0 +1,25 @@
+IGUI_DE = {
+    IGUI_SS_BARTITLE_HEALTH = "Gesundheit",
+    IGUI_SS_BARTITLE_ENDURANCE = "Ausdauer",
+    IGUI_SS_BARTITLE_HUNGER = "Hunger",
+    IGUI_SS_BARTITLE_THIRST = "Durst",
+    IGUI_SS_BARTITLE_FATIGUE = "Erschöpfung",
+    IGUI_SS_BARTITLE_HAPPY = "Freude",
+    IGUI_SS_BARTITLE_BOREDOM = "Langeweile",
+    IGUI_SS_BARTITLE_BODYTEMP = "Körpertemperatur",
+    IGUI_SS_BARTITLE_BODYHEATGEN = "Körperwärme",
+    IGUI_SS_BARTITLE_CALORIES = "Kalorien",
+    IGUI_SS_BARTITLE_WEIGHT = "Gewicht",
+    IGUI_SS_BARTITLE_ANGER = "Wut",
+    IGUI_SS_BARTITLE_FEAR = "Angst",
+    IGUI_SS_BARTITLE_PAIN = "Schmerz",
+    IGUI_SS_BARTITLE_PANIC = "Panik",
+    IGUI_SS_BARTITLE_STRESS = "Stress",
+
+    IGUI_SS_BARTITLE_CARBOHYDRATES = "Kohlenhydrate",
+    IGUI_SS_BARTITLE_PROTEINS = "Proteine",
+    IGUI_SS_BARTITLE_LIPIDS = "Lipide",
+
+    IGUI_SS_BARTITLE_O_OPTION = "Optionen",
+    IGUI_SS_BARTITLE_O_VERTICAL = "Vertikal",
+}

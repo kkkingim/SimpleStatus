@@ -2,7 +2,7 @@ local ssBar = require("ISSSBar")
 local utils = require("ss.utils")
 
 SimpleStatus = {
-    VERSION = "1.221008.1",
+    VERSION = "1.221010.1",
     ss_barConfigs = {},
     isNewer = function(self, ver)
         if ver == self.VERSION then return true end

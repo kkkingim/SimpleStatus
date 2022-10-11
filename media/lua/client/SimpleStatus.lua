@@ -1,9 +1,17 @@
 local ssBar = require("ISSSBar")
 local utils = require("ss.utils")
 
+local valueFn, textFn, percentFn, colorFn
+
 SimpleStatus = {
     VERSION = "1.221010.1",
     ss_barConfigs = {},
+
+    valueFn = valueFn,
+    textFn = textFn,
+    percentFn = percentFn,
+    colorFn = colorFn,
+
     isNewer = function(self, ver)
         if ver == self.VERSION then return true end
         local v = {}
@@ -27,6 +35,8 @@ SimpleStatus = {
     end
 }
 
+ss_barConfigs = SimpleStatus.ss_barConfigs
+
 local infoBar = nil
 
 local color = utils.color
@@ -34,7 +44,7 @@ local getUIText = utils.fn.getUIText
 local getPColor = utils.fn.getPColor
 
 
-local valueFn = {
+valueFn = {
     health = function(p)
         return round(p:getBodyDamage():getHealth())
     end,
@@ -96,7 +106,7 @@ local valueFn = {
     -- end
 
 }
-local textFn = {
+textFn = {
     proteins = function()
         local value = valueFn.proteins(getPlayer())
         local valueText = tostring(round(value, 1))
@@ -129,7 +139,7 @@ local textFn = {
         return valueText
     end
 }
-local percentFn = {
+percentFn = {
     proteins = function()
         local value = valueFn.proteins(getPlayer())
         return (value + 500) / 1500
@@ -146,7 +156,7 @@ local percentFn = {
         return thermos:getHeatGenerationUI()
     end
 }
-local colorFn = {
+colorFn = {
     proteins = function()
         -- -500 -300 50 300 1000
         local value = valueFn.proteins(getPlayer())

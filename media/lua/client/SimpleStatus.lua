@@ -324,7 +324,7 @@ local function showss()
 end
 
 local function handleKey(key)
-    infoBar:handleKey(key)
+    if infoBar then infoBar:handleKey(key) end
     return key
 end
 

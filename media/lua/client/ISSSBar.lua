@@ -345,7 +345,13 @@ end
 function ssBar:handleKey(key)
     if (isShiftKeyDown() and key == self.config.toggleKey) then
         self.shown = not self.shown
-        self:setVisible(self.shown)
+        if self.shown then
+            self:setVisible(true)
+            self:addToUIManager()
+        else
+            self:setVisible(false)
+            self:removeFromUIManager()
+        end
     end
 end
 

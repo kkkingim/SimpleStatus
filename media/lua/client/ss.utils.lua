@@ -83,4 +83,17 @@ utils.fn.getTempStr = function(temp)
 end
 
 
+
+utils.fn.SetFn = {
+    addToSet = function(set, key)
+        set[key] = true
+    end,
+    removeFromSet = function (set, key)
+        set[key] = nil
+    end,
+    setContains = function(set, key)
+        return set[key] ~= nil
+    end
+}
+
 return utils

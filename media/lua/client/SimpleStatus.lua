@@ -6,6 +6,7 @@ local infoBar = nil
 local color = utils.color
 local getUIText = utils.fn.getUIText
 local getPColor = utils.fn.getPColor
+local setFn = utils.fn.SetFn
 
 
 local valueFn = {
@@ -206,6 +207,7 @@ SimpleStatus = {
     addBar = function(self, barObj)
         if self.ss_barConfigs then
             table.insert(self.ss_barConfigs, barObj)
+            self.ss_barConfigs[barObj.name or ''] = barObj
         end
     end
 }
@@ -255,7 +257,8 @@ local bars = {
 
     -- custom type example
     -- {name = "test", title = "TEST", type="custom", shown=true, ivalue=0, textFn=testTextFn, colorFn=testColorFn, percentFn=testPercentFn}
-
+    --## TEST UNIQUE ##
+    -- { name = "weight", title = getUIText("WEIGHT"), type = "custom", shown = false, textFn = function() return "0.0" end, colorFn = colorFn.weight, percentFn = percentFn.weight },
 
     --[[ API Usage
     ## normal type ##
@@ -314,7 +317,17 @@ local function showss()
     local base_x = 20
     local base_y = 630
 
-    infoBar = ssBar:new(base_x, base_y, getPlayer(), SimpleStatus.ss_barConfigs)
+    local bars = {}
+    local names = {}
+    for i=#SimpleStatus.ss_barConfigs,1,-1 do
+        local bar = SimpleStatus.ss_barConfigs[i]
+        if not setFn.setContains(names, bar.name) then
+            setFn.addToSet(names, bar.name)
+            table.insert(bars,1, bar)
+        end
+    end
+
+    infoBar = ssBar:new(base_x, base_y, getPlayer(), bars)
     infoBar:initialise()
     infoBar:addToUIManager()
 end

@@ -1,42 +1,6 @@
 local ssBar = require("ISSSBar")
 local utils = require("ss.utils")
 
-local valueFn, textFn, percentFn, colorFn
-
-SimpleStatus = {
-    VERSION = "1.221010.1",
-    ss_barConfigs = {},
-
-    valueFn = valueFn,
-    textFn = textFn,
-    percentFn = percentFn,
-    colorFn = colorFn,
-
-    isNewer = function(self, ver)
-        if ver == self.VERSION then return true end
-        local v = {}
-        local v1 = {}
-        for i in string.gmatch(self.VERSION, "([^.]+)") do
-            table.insert(v, tonumber(i))
-        end
-        for i in string.gmatch(ver, "([^.]+)") do
-            table.insert(v1, tonumber(i))
-        end
-        for i = 1, 3 do
-            if v1[i] > v[i] then return true end
-            if v1[i] < v[i] then return false end
-        end
-        return true
-    end,
-    addBar = function(self, barObj)
-        if self.ss_barConfigs then
-            table.insert(self.ss_barConfigs, barObj)
-        end
-    end
-}
-
-ss_barConfigs = SimpleStatus.ss_barConfigs
-
 local infoBar = nil
 
 local color = utils.color
@@ -44,7 +8,7 @@ local getUIText = utils.fn.getUIText
 local getPColor = utils.fn.getPColor
 
 
-valueFn = {
+local valueFn = {
     health = function(p)
         return round(p:getBodyDamage():getHealth())
     end,
@@ -106,7 +70,7 @@ valueFn = {
     -- end
 
 }
-textFn = {
+local textFn = {
     proteins = function()
         local value = valueFn.proteins(getPlayer())
         local valueText = tostring(round(value, 1))
@@ -139,7 +103,7 @@ textFn = {
         return valueText
     end
 }
-percentFn = {
+local percentFn = {
     proteins = function()
         local value = valueFn.proteins(getPlayer())
         return (value + 500) / 1500
@@ -156,7 +120,7 @@ percentFn = {
         return thermos:getHeatGenerationUI()
     end
 }
-colorFn = {
+local colorFn = {
     proteins = function()
         -- -500 -300 50 300 1000
         local value = valueFn.proteins(getPlayer())
@@ -212,6 +176,38 @@ colorFn = {
         end
     end,
 
+}
+
+SimpleStatus = {
+    VERSION = "1.221012.1",
+    ss_barConfigs = {},
+
+    valueFn = valueFn,
+    textFn = textFn,
+    percentFn = percentFn,
+    colorFn = colorFn,
+
+    isNewer = function(self, ver)
+        if ver == self.VERSION then return true end
+        local v = {}
+        local v1 = {}
+        for i in string.gmatch(self.VERSION, "([^.]+)") do
+            table.insert(v, tonumber(i))
+        end
+        for i in string.gmatch(ver, "([^.]+)") do
+            table.insert(v1, tonumber(i))
+        end
+        for i = 1, 3 do
+            if v1[i] > v[i] then return true end
+            if v1[i] < v[i] then return false end
+        end
+        return true
+    end,
+    addBar = function(self, barObj)
+        if self.ss_barConfigs then
+            table.insert(self.ss_barConfigs, barObj)
+        end
+    end
 }
 
 --[[

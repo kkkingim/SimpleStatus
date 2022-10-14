@@ -22,4 +22,5 @@ IGUI_RU = {
 
     IGUI_SS_BARTITLE_O_OPTION = "Параметры",
     IGUI_SS_BARTITLE_O_VERTICAL = "Вертикально",
+    IGUI_SS_BARTITLE_O_OPACITY = "Прозрачность",
 }

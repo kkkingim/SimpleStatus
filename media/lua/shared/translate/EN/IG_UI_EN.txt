@@ -22,4 +22,5 @@ IGUI_EN = {
 
     IGUI_SS_BARTITLE_O_OPTION = "Options",
     IGUI_SS_BARTITLE_O_VERTICAL = "Vertical",
+    IGUI_SS_BARTITLE_O_OPACITY = "Opacity",
 }

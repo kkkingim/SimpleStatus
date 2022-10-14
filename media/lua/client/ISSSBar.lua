@@ -5,6 +5,9 @@ local utils = require("ss.utils")
 local lineHeight = getTextManager():getFontHeight(UIFont.Small)
 
 local color = utils.color
+local minOpacityPercentage = 10
+local defaultMainOpacityPercentage = 65
+local mainOpacity = defaultMainOpacityPercentage / 100
 local getUIText = utils.fn.getUIText
 local getPColor = utils.fn.getPColor
 local loadConfig = utils.fn.loadConfig
@@ -19,6 +22,7 @@ local function initConfig(config, x, y, barConfigs)
     config.pos = config.pos or { x, y }
     config.toggleKey = config.toggleKey or 43
     config.isVertical = config.isVertical or false
+    config.opacity = config.opacity or defaultMainOpacityPercentage
     config.shownConfig = config.shownConfig or {}
 
     for _, i in ipairs(barConfigs) do
@@ -30,17 +34,17 @@ local function initConfig(config, x, y, barConfigs)
 end
 
 function ssBar:drawTextWithShadow(text, x, y)
-    self:drawText(text, x + 1, y, 0.0, 0.0, 0.0, 0.66, UIFont.Small)
-    self:drawText(text, x, y + 1, 0.0, 0.0, 0.0, 0.66, UIFont.Small)
-    self:drawText(text, x - 1, y, 0.0, 0.0, 0.0, 0.66, UIFont.Small)
-    self:drawText(text, x, y - 1, 0.0, 0.0, 0.0, 0.66, UIFont.Small)
+    self:drawText(text, x + 1, y, 0.0, 0.0, 0.0, mainOpacity, UIFont.Small)
+    self:drawText(text, x, y + 1, 0.0, 0.0, 0.0, mainOpacity, UIFont.Small)
+    self:drawText(text, x - 1, y, 0.0, 0.0, 0.0, mainOpacity, UIFont.Small)
+    self:drawText(text, x, y - 1, 0.0, 0.0, 0.0, mainOpacity, UIFont.Small)
 
-    self:drawText(text, x + 1, y + 1, 0.0, 0.0, 0.0, 0.66, UIFont.Small)
-    self:drawText(text, x + 1, y - 1, 0.0, 0.0, 0.0, 0.66, UIFont.Small)
-    self:drawText(text, x - 1, y + 1, 0.0, 0.0, 0.0, 0.66, UIFont.Small)
-    self:drawText(text, x - 1, y - 1, 0.0, 0.0, 0.0, 0.66, UIFont.Small)
+    self:drawText(text, x + 1, y + 1, 0.0, 0.0, 0.0, mainOpacity, UIFont.Small)
+    self:drawText(text, x + 1, y - 1, 0.0, 0.0, 0.0, mainOpacity, UIFont.Small)
+    self:drawText(text, x - 1, y + 1, 0.0, 0.0, 0.0, mainOpacity, UIFont.Small)
+    self:drawText(text, x - 1, y - 1, 0.0, 0.0, 0.0, mainOpacity, UIFont.Small)
 
-    self:drawText(text, x, y, 1.0, 1.0, 1.0, 1.0, UIFont.Small)
+    self:drawText(text, x, y, 1.0, 1.0, 1.0, mainOpacity, UIFont.Small)
 end
 
 function ssBar:getBarColor(value, ivalue)
@@ -195,14 +199,14 @@ function ssBar:drawTempBar(percent, i)
     local gradientTex = getTexture("media/ui/BodyInsulation/heatbar_horz")
     local highlightTex = getTexture("media/ui/BodyInsulation/gradient_highlight")
     local radius = 20
-    local darkAlpha = 0.6
+    local darkAlpha = 0.75 * mainOpacity
 
     local barw = self.config.barWidth
     local barl = self.barLength
     local y = (barw + 3) * i - barw
 
     -- draw heatbar
-    self:drawTextureScaled(gradientTex, 3, y, barl, barw, 1.0, 1.0, 1.0, 1.0)
+    self:drawTextureScaled(gradientTex, 3, y, barl, barw, mainOpacity, 1.0, 1.0, 1.0)
 
     -- draw stat
     local valOffset = percent * barl
@@ -261,7 +265,7 @@ function ssBar:renderHBars()
         if _type == "temp" then
             self:drawTempBar(percent, i)
         else
-            self:drawRectStatic(3, y, rectw, self.config.barWidth, 0.66, c[1], c[2], c[3])
+            self:drawRectStatic(3, y, rectw, self.config.barWidth, mainOpacity, c[1], c[2], c[3])
         end
         self:drawTextWithShadow(title, 3, y)
         self:drawTextWithShadow(valueText, textX, y)
@@ -286,9 +290,9 @@ function ssBar:renderVBars()
 
         local tex = getTexture("media/ui/ss-" .. name .. ".png")
         if not tex then tex = getTexture("media/ui/ss-unknow.png") end
-        self:drawTextureScaled(tex, x, self.barLength + 6, self.config.barWidth, self.config.barWidth, 1.0, 1.0, 1.0, 1.0)
+        self:drawTextureScaled(tex, x, self.barLength + 6, self.config.barWidth, self.config.barWidth, mainOpacity, 1.0, 1.0, 1.0)
 
-        self:drawRectStatic(x, self.barLength - recth + 3, self.config.barWidth, recth, 0.66, c[1], c[2], c[3])
+        self:drawRectStatic(x, self.barLength - recth + 3, self.config.barWidth, recth, mainOpacity, c[1], c[2], c[3])
     end
 
     -- show tooltip
@@ -328,18 +332,37 @@ function ssBar:onRightMouseUp(x, y)
     if not (self.player or {}).getPlayerNum then return end
 
     local contextMenu = ISContextMenu.get(self.player:getPlayerNum(), getMouseX() + 5, getMouseY() + 5)
+
+    --toggles
     local configOpts = contextMenu:addOption("[ " .. getUIText("O_OPTION") .. " ]", self, nil)
-    local configContectMenu = ISContextMenu:getNew(contextMenu)
-    contextMenu:addSubMenu(configOpts, configContectMenu)
+    local configOptsMenu = ISContextMenu:getNew(contextMenu)
+    contextMenu:addSubMenu(configOpts, configOptsMenu)
+    local optionVertical = configOptsMenu:addOption(getUIText("O_VERTICAL"), self, self.optClickVertical)
+    optionVertical.checkMark = self.config.isVertical
 
-    local isv = configContectMenu:addOption(getUIText("O_VERTICAL"), self, self.optClickVertical)
-    isv.checkMark = self.config.isVertical
+    --opacities
+    local configOpacity = contextMenu:addOption ( "[ " .. getUIText("O_OPACITY") .. " ]" , self , nil)
+    local configOpacityMenu = ISContextMenu:getNew(contextMenu)
+    contextMenu:addSubMenu ( configOpacity , configOpacityMenu )
+    for i = minOpacityPercentage,100,5 do
+        local o = configOpacityMenu:addOption ( i .. "%" , self , self.setMainOpacity , i )
+        o.checkMark = i == self.config.opacity
+    end
 
+    --show/hide bars
     for _, i in ipairs(self.barConfigs) do
         local o = contextMenu:addOption(i.title, self, self.optClick, i.name)
         o.checkMark = self.config.shownConfig[i.name]
     end
 
+end
+
+function ssBar:setMainOpacity ( opacity )
+    opacity = math.max ( minOpacityPercentage , math.min ( tonumber ( opacity ) or defaultMainOpacityPercentage , 100 ) )
+    self.config.opacity = opacity
+    mainOpacity = opacity / 100
+    self.backgroundColor.a = 0.5 * mainOpacity  --ISPanel default BG alpha is 0.5
+    self.borderColor.a = mainOpacity            --ISPanel default border alpha is 1.0
 end
 
 function ssBar:handleKey(key)
@@ -377,6 +400,7 @@ function ssBar:new(x, y, player, barConfigs)
     o.titleLength = 50
     o.textLength  = 50
     o.barLength   = 100
+    o:setMainOpacity ( config.opacity )
 
     o.shown = true
 

@@ -19,8 +19,14 @@ local valueFn = {
     fatigue = function(p)
         return round((p:getStats():getFatigue()) * 100)
     end,
+    rest = function(p)
+        return round((1 - p:getStats():getFatigue()) * 100)
+    end,
     happy = function(p)
         return round(100 - p:getBodyDamage():getUnhappynessLevel())
+    end,
+    unhappy = function(p)
+        return round(p:getBodyDamage():getUnhappynessLevel())
     end,
     boredom = function(p)
         return round(p:getBodyDamage():getBoredomLevel())
@@ -66,6 +72,24 @@ local valueFn = {
         local thermos = p:getBodyDamage():getThermoregulator()
         return round(thermos:getMetabolicRateReal(), 1)
     end,
+    dirtiness = function(p)
+        local visual = p:getHumanVisual()
+        local v = 0
+        for i = 1, BloodBodyPartType.MAX:index() do
+            local part = BloodBodyPartType.FromIndex(i - 1)
+            v = v + visual:getBlood(part) + visual:getDirt(part)
+        end
+        return v / (BloodBodyPartType.MAX:index() * 2)
+    end,
+    cleanliness = function(p)
+        local visual = p:getHumanVisual()
+        local v = 0
+        for i = 1, BloodBodyPartType.MAX:index() do
+            local part = BloodBodyPartType.FromIndex(i - 1)
+            v = v + visual:getBlood(part) + visual:getDirt(part)
+        end
+        return 1 - v / (BloodBodyPartType.MAX:index() * 2)
+    end
     -- fear = function(p)
     --     return round(p:getStats():getFear() * 100)
     -- end
@@ -102,6 +126,14 @@ local textFn = {
             end
         end
         return valueText
+    end,
+    dirtiness = function()
+        local value = valueFn.dirtiness(getPlayer())
+        return tostring(round(value * 100, 1)) .. " %"
+    end,
+    cleanliness = function()
+        local value = valueFn.cleanliness(getPlayer())
+        return tostring(round(value * 100, 1)) .. " %"
     end
 }
 local percentFn = {
@@ -119,6 +151,12 @@ local percentFn = {
     bodyHeatGen = function()
         local thermos = getPlayer():getBodyDamage():getThermoregulator()
         return thermos:getHeatGenerationUI()
+    end,
+    dirtiness = function()
+        return valueFn.dirtiness(getPlayer())
+    end,
+    cleanliness = function()
+        return valueFn.cleanliness(getPlayer())
     end
 }
 local colorFn = {
@@ -176,6 +214,26 @@ local colorFn = {
             return getPColor(color.blue, color.cyan, p * 4)
         end
     end,
+    dirtiness = function()
+        local value = valueFn.dirtiness(getPlayer())
+        local c = color.white
+        if value < 0.5 then
+            c = getPColor(color.green, color.yellow, value * 2)
+        else
+            c = getPColor(color.yellow, color.red, (value * 2 - 1))
+        end
+        return c
+    end,
+    cleanliness = function()
+        local value = valueFn.cleanliness(getPlayer())
+        local c = color.white
+        if value < 0.5 then
+            c = getPColor(color.red, color.yellow, value * 2)
+        else
+            c = getPColor(color.yellow, color.green, (value * 2 - 1))
+        end
+        return c
+    end
 
 }
 
@@ -212,22 +270,6 @@ SimpleStatus = {
     end
 }
 
---[[
-
-local function testTextFn()
-    return tostring(round(getPlayer():getStats():getEndurance() * 100)) .. " %"
-end
-
-local function testColorFn()
-    return {1, 1, 0}
-end
-
-local function testPercentFn()
-    return 0.5
-end
-
-]]
-
 local bars = {
     { name = "health", title = getUIText("HEALTH"), valueFn = valueFn.health, ivalue = 100, shown = true },
     { name = "endurance", title = getUIText("ENDURANCE"), valueFn = valueFn.endurance, ivalue = 100, shown = true },
@@ -251,6 +293,12 @@ local bars = {
 
     { name = "bodytemp", title = getUIText("BODYTEMP"), valueFn = valueFn.bodyTemp, percentFn = percentFn.bodyTemp, colorFn = colorFn.bodyTemp, type = "temp", shown = true },
     { name = "bodyheatgen", title = getUIText("BODYHEATGEN"), valueFn = valueFn.bodyHeatGen, percentFn = percentFn.bodyHeatGen, colorFn = colorFn.bodyHeatGen, type = "temp", shown = false },
+
+    { name = "dirtiness", title = getUIText("DIRTINESS"), type = "custom", shown = false, textFn = textFn.dirtiness, colorFn = colorFn.dirtiness, percentFn = percentFn.dirtiness },
+
+    { name = "happy-v", title = getUIText("UNHAPPY"), valueFn = valueFn.unhappy, ivalue = 0 },
+    { name = "fatigue-v", title = getUIText("REST"), valueFn = valueFn.rest, ivalue = 100 },
+    { name = "dirtiness-v", title = getUIText("CLEANLINESS"), type = "custom", textFn = textFn.cleanliness, colorFn = colorFn.cleanliness, percentFn = percentFn.cleanliness },
 
     -- may not used in game ?
     -- {name = "fear", title = getUIText("FEAR"), valueFn = valueFn.fear, ivalue = 0, shown = false},
@@ -319,11 +367,11 @@ local function showss()
 
     local bars = {}
     local names = {}
-    for i=#SimpleStatus.ss_barConfigs,1,-1 do
+    for i = #SimpleStatus.ss_barConfigs, 1, -1 do
         local bar = SimpleStatus.ss_barConfigs[i]
         if not setFn.setContains(names, bar.name) then
             setFn.addToSet(names, bar.name)
-            table.insert(bars,1, bar)
+            table.insert(bars, 1, bar)
         end
     end
 

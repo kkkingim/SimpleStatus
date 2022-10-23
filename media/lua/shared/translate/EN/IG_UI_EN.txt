@@ -22,4 +22,14 @@ IGUI_EN = {
 
     IGUI_SS_BARTITLE_O_OPTION = "Options",
     IGUI_SS_BARTITLE_O_VERTICAL = "Vertical",
+
+    IGUI_SS_BARTITLE_DIRTINESS = "Dirtiness",
+    IGUI_SS_BARTITLE_CLEANLINESS = "Cleanliness",
+    IGUI_SS_BARTITLE_REST = "Rest",
+    IGUI_SS_BARTITLE_UNHAPPY = "Unhappiness",
+    IGUI_SS_BARTITLE_TOG_HAPPY = "Toggle Happiness/Unhappiness",
+    IGUI_SS_BARTITLE_TOG_FATIGUE = "Toggle Fatigue/Rest",
+    IGUI_SS_BARTITLE_TOG_DIRTINESS = "Toggle Dirtiness/Cleanliness",
+
+
 }

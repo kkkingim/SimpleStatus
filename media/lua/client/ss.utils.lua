@@ -3,13 +3,6 @@ local json = require("ss.json")
 local utils = {}
 
 utils.color = {
-    -- red = { 1, 0, 0 },
-    -- green = { 0, 1, 0.5 },
-    -- blue = { 0, 0.5, 1 },
-    -- yellow = { 1, 1, 0.5 },
-    -- cyan = { 0.5, 1, 1 },
-    -- white = { 1, 1, 1 },
-    -- black = { 0, 0, 0 },
     red = { 1, 0, 0 },
     green = { 0, 1, 0 },
     blue = { 0, 0, 1 },
@@ -46,9 +39,6 @@ utils.fn.loadConfig = function()
     if contents == "" or contents == nil then return nil end
 
     return json.decode(contents)
-
-    -- local config = player:getModData()["ss_config"]
-    -- return config
 end
 
 utils.fn.saveConfig = function(config)
@@ -58,8 +48,6 @@ utils.fn.saveConfig = function(config)
     local contents = json.encode(config)
     file:write(contents)
     file:close()
-
-    -- self.player:getModData()["ss_config"] = self.config
 end
 
 utils.fn.maxWidthOfStrs = function(strs)
@@ -73,22 +61,21 @@ end
 
 utils.fn.getTempStr = function(temp)
     local c = getCore():getOptionDisplayAsCelsius()
-    local unit = "°C"
+    local unit = string.char(176) .. "C"
     if not c then
         temp = temp * 1.8 + 32
-        unit = "°F"
+        unit = string.char(176) .. "F"
     end
     temp = round((temp * 10.0) / 10, 1)
     return tostring(temp) .. " " .. unit
 end
 
 
-
 utils.fn.SetFn = {
     addToSet = function(set, key)
         set[key] = true
     end,
-    removeFromSet = function (set, key)
+    removeFromSet = function(set, key)
         set[key] = nil
     end,
     setContains = function(set, key)

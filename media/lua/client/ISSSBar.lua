@@ -13,19 +13,27 @@ local getStrWidth = utils.fn.getStrWidth
 local getTempStr = utils.fn.getTempStr
 
 
-local function initConfig(config, x, y, barConfigs)
+local function initConfig(config, x, y, barConfigs, bars_reverse)
     config = config or {}
     config.barWidth = config.barWidth or lineHeight
     config.pos = config.pos or { x, y }
     config.toggleKey = config.toggleKey or 43
     config.isVertical = config.isVertical or false
     config.shownConfig = config.shownConfig or {}
+    config.toggleStats = config.toggleStats or {}
 
     for _, i in ipairs(barConfigs) do
         if config.shownConfig[i.name] == nil then
             config.shownConfig[i.name] = i.shown
         end
     end
+
+    for k, _ in pairs(bars_reverse) do
+        if config.toggleStats[k] == nil then
+            config.toggleStats[k] = false
+        end
+    end
+
     return config
 end
 
@@ -66,7 +74,13 @@ function ssBar:prepareBarInfo()
 
     local bars = {}
     for _, i in ipairs(self.barConfigs) do
-        if self.config.shownConfig[i.name] then table.insert(bars, i) end
+        if self.config.shownConfig[i.name] then
+            if self.config.toggleStats[i.name] and self.bars_reverse[i.name] ~= nil then
+                table.insert(bars, self.bars_reverse[i.name])
+            else
+                table.insert(bars, i)
+            end
+        end
     end
 
     for _, i in ipairs(bars) do
@@ -149,6 +163,9 @@ function ssBar:prepareBarInfo()
         table.insert(barInfo, { title, text, c, percent, _type, name })
     end
     self.barInfo = barInfo
+    if self.timer == 0 then
+        self:adjustWindowSize()
+    end
 
 end
 
@@ -179,6 +196,13 @@ end
 
 function ssBar:optClick(name)
     self.config.shownConfig[name] = not self.config.shownConfig[name]
+    self:prepareBarInfo()
+    self:adjustWindowSize()
+    saveConfig(self.config)
+end
+
+function ssBar:optClickToggle(name)
+    self.config.toggleStats[name] = not self.config.toggleStats[name]
     self:prepareBarInfo()
     self:adjustWindowSize()
     saveConfig(self.config)
@@ -309,6 +333,8 @@ end
 
 function ssBar:prerender()
     ISPanel.prerender(self)
+    self.timer = self.timer + 1
+    if self.timer == 60 then self.timer = 0 end
     self:prepareBarInfo()
     if self.config.isVertical then
         self:renderVBars()
@@ -335,6 +361,13 @@ function ssBar:onRightMouseUp(x, y)
     local isv = configContectMenu:addOption(getUIText("O_VERTICAL"), self, self.optClickVertical)
     isv.checkMark = self.config.isVertical
 
+    local is_tog_happy = configContectMenu:addOption(getUIText("TOG_HAPPY"), self, self.optClickToggle, "happy")
+    is_tog_happy.checkMark = self.config.toggleStats.happy
+    local is_tog_fatigue = configContectMenu:addOption(getUIText("TOG_FATIGUE"), self, self.optClickToggle, "fatigue")
+    is_tog_fatigue.checkMark = self.config.toggleStats.fatigue
+    local is_tog_dirtiness = configContectMenu:addOption(getUIText("TOG_DIRTINESS"), self, self.optClickToggle, "dirtiness")
+    is_tog_dirtiness.checkMark = self.config.toggleStats.dirtiness
+
     for _, i in ipairs(self.barConfigs) do
         local o = contextMenu:addOption(i.title, self, self.optClick, i.name)
         o.checkMark = self.config.shownConfig[i.name]
@@ -356,10 +389,23 @@ function ssBar:handleKey(key)
 end
 
 
-function ssBar:new(x, y, player, barConfigs)
+function ssBar:new(x, y, player, barConfigs_t)
     -- load config
     local config = loadConfig()
-    config = initConfig(config, x, y, barConfigs)
+
+    local barConfigs = {}
+    local bars_reverse = {}
+
+    for _, bar in ipairs(barConfigs_t) do
+        if bar.name:sub(-2) == "-v" then
+            bar.name = bar.name:sub(0, -3)
+            bars_reverse[bar.name] = bar;
+        else
+            table.insert(barConfigs, bar)
+        end
+    end
+
+    config = initConfig(config, x, y, barConfigs, bars_reverse)
 
     local o = ISPanel:new(config.pos[1], config.pos[2], 0, 0)
     setmetatable(o, self)
@@ -369,6 +415,7 @@ function ssBar:new(x, y, player, barConfigs)
 
     o.player = player
     o.barConfigs = barConfigs
+    o.bars_reverse = bars_reverse
 
     o.config = config
     saveConfig(o.config)
@@ -377,6 +424,8 @@ function ssBar:new(x, y, player, barConfigs)
     o.titleLength = 50
     o.textLength  = 50
     o.barLength   = 100
+
+    o.timer = 0
 
     o.shown = true
 

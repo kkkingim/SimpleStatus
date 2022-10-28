@@ -1,6 +1,6 @@
 IGUI_RU = {
 	IGUI_SS_BARTITLE_HEALTH = "Здоровье",
-	IGUI_SS_BARTITLE_ENDURANCE = "Выносливость",  /* антоним - Запас сил */
+	IGUI_SS_BARTITLE_ENDURANCE = "Выносливость",  /* ещё вариант - Запас сил */
 	IGUI_SS_BARTITLE_HUNGER = "Сытость", /* антоним - Голод */
 	IGUI_SS_BARTITLE_THIRST = "Жажда",
 	IGUI_SS_BARTITLE_FATIGUE = "Усталость",

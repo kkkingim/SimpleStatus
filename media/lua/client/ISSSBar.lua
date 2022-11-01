@@ -93,7 +93,7 @@ function ssBar:prepareBarInfo()
         if i.valueFn then value = i.valueFn(self.player) end
         local percent = 1
         local text = "-"
-        local c = color.white
+        local c = color.black
 
         if _type == nil then
             local valueFlow = nil
@@ -173,7 +173,7 @@ function ssBar:adjustWindowSize()
     local count = #self.barInfo
 
     for _, i in ipairs(self.barInfo) do
-        local l = getStrWidth(i[1]) + 10
+        local l = getStrWidth(i[1]) + 20
         if l > self.titleLength then self.titleLength = l end
         l = getStrWidth(i[2])
         if l > self.textLength then self.textLength = l end

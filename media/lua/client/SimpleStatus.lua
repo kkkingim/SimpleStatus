@@ -134,6 +134,10 @@ local textFn = {
     cleanliness = function()
         local value = valueFn.cleanliness(getPlayer())
         return tostring(round(value * 100, 1)) .. " %"
+    end,
+    weight_capacity = function()
+        local player = getPlayer()
+        return tostring(round(player:getInventoryWeight(), 2)) .. " / " .. tostring(round(player:getMaxWeight(), 2))
     end
 }
 local percentFn = {
@@ -233,6 +237,12 @@ local colorFn = {
             c = getPColor(color.yellow, color.green, (value * 2 - 1))
         end
         return c
+    end,
+    weight_capacity = function()
+        local player = getPlayer()
+        local p = player:getInventoryWeight() / player:getMaxWeight()
+        if p > 1 then p = 1 end
+        return getPColor(color.green, color.red, p)
     end
 
 }
@@ -300,6 +310,7 @@ local bars = {
     { name = "fatigue-v", title = getUIText("REST"), valueFn = valueFn.rest, ivalue = 100 },
     { name = "dirtiness-v", title = getUIText("CLEANLINESS"), type = "custom", textFn = textFn.cleanliness, colorFn = colorFn.cleanliness, percentFn = percentFn.cleanliness },
 
+    { name = "weight-capacity", title = getUIText("WEIGHT-CAPACITY"), type = "custom", textFn = textFn.weight_capacity, colorFn = colorFn.weight_capacity},
     -- may not used in game ?
     -- {name = "fear", title = getUIText("FEAR"), valueFn = valueFn.fear, ivalue = 0, shown = false},
 

@@ -4,7 +4,7 @@ IGUI_EN = {
     IGUI_SS_BARTITLE_HUNGER = "Hunger",
     IGUI_SS_BARTITLE_THIRST = "Thirst",
     IGUI_SS_BARTITLE_FATIGUE = "Fatigue",
-    IGUI_SS_BARTITLE_HAPPY = "Happy",
+    IGUI_SS_BARTITLE_HAPPY = "Happiness",
     IGUI_SS_BARTITLE_BOREDOM = "Boredom",
     IGUI_SS_BARTITLE_BODYTEMP = "BodyTemp",
     IGUI_SS_BARTITLE_BODYHEATGEN = "BodyHeatGen",
@@ -30,6 +30,8 @@ IGUI_EN = {
     IGUI_SS_BARTITLE_TOG_HAPPY = "Toggle Happiness/Unhappiness",
     IGUI_SS_BARTITLE_TOG_FATIGUE = "Toggle Fatigue/Rest",
     IGUI_SS_BARTITLE_TOG_DIRTINESS = "Toggle Dirtiness/Cleanliness",
+
+    IGUI_SS_BARTITLE_WEIGHT-CAPACITY = "Weight-Capacity",
 
 
 }

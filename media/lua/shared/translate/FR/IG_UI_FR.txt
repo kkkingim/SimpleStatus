@@ -1,0 +1,33 @@
+IGUI_FR = {
+    IGUI_SS_BARTITLE_HEALTH = "Santé",
+    IGUI_SS_BARTITLE_ENDURANCE = "Endurance",
+    IGUI_SS_BARTITLE_HUNGER = "Faim",
+    IGUI_SS_BARTITLE_THIRST = "Soif",
+    IGUI_SS_BARTITLE_FATIGUE = "Fatigue",
+    IGUI_SS_BARTITLE_HAPPY = "Bonheur",
+    IGUI_SS_BARTITLE_BOREDOM = "Ennui",
+    IGUI_SS_BARTITLE_BODYTEMP = "TempCorps",
+    IGUI_SS_BARTITLE_BODYHEATGEN = "GénChaleurCorps",
+    IGUI_SS_BARTITLE_CALORIES = "Calories",
+    IGUI_SS_BARTITLE_WEIGHT = "Masse",
+    IGUI_SS_BARTITLE_ANGER = "Colère",
+    IGUI_SS_BARTITLE_FEAR = "Peur",
+    IGUI_SS_BARTITLE_PAIN = "Douleur",
+    IGUI_SS_BARTITLE_PANIC = "Panique",
+    IGUI_SS_BARTITLE_STRESS = "Stress",
+
+    IGUI_SS_BARTITLE_CARBOHYDRATES = "Glucides",
+    IGUI_SS_BARTITLE_PROTEINS = "Protides",
+    IGUI_SS_BARTITLE_LIPIDS = "Lipides",
+
+    IGUI_SS_BARTITLE_O_OPTION = "Options",
+    IGUI_SS_BARTITLE_O_VERTICAL = "Verticale",
+
+    IGUI_SS_BARTITLE_DIRTINESS = "Saleté",
+    IGUI_SS_BARTITLE_CLEANLINESS = "Propreté",
+    IGUI_SS_BARTITLE_REST = "Repos",
+    IGUI_SS_BARTITLE_UNHAPPY = "Malheur",
+    IGUI_SS_BARTITLE_TOG_HAPPY = "Activer Bonheur/Malheur",
+    IGUI_SS_BARTITLE_TOG_FATIGUE = "Activer Fatigue/Repos",
+    IGUI_SS_BARTITLE_TOG_DIRTINESS = "Activer Saleté/Propreté",
+}

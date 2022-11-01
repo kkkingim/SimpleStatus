@@ -30,4 +30,6 @@ IGUI_CH = {
     IGUI_SS_BARTITLE_TOG_HAPPY = "切換 開心/傷心,
     IGUI_SS_BARTITLE_TOG_FATIGUE = "切換 疲勞/精神",
     IGUI_SS_BARTITLE_TOG_DIRTINESS = "切換 骯髒/乾淨",
+
+    IGUI_SS_BARTITLE_WEIGHT-CAPACITY = "負重",
 }

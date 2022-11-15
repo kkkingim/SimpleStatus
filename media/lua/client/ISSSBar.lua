@@ -86,6 +86,9 @@ function ssBar:prepareBarInfo()
     for _, i in ipairs(bars) do
         local title = i.title
         local name = i.name
+        if name:sub(-2) == "-v" then
+            name = name:sub(0, -3)
+        end
         local ivalue = i.ivalue
         local _type = i.type
 
@@ -398,8 +401,8 @@ function ssBar:new(x, y, player, barConfigs_t)
 
     for _, bar in ipairs(barConfigs_t) do
         if bar.name:sub(-2) == "-v" then
-            bar.name = bar.name:sub(0, -3)
-            bars_reverse[bar.name] = bar;
+            local bar_name = bar.name:sub(0, -3)
+            bars_reverse[bar_name] = bar;
         else
             table.insert(barConfigs, bar)
         end

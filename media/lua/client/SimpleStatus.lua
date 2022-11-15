@@ -1,5 +1,6 @@
 local ssBar = require("ISSSBar")
 local utils = require("ss.utils")
+local load_mod_comp = require("ss.mods.compatible")
 
 local infoBar = nil
 
@@ -241,8 +242,15 @@ local colorFn = {
     weight_capacity = function()
         local player = getPlayer()
         local p = player:getInventoryWeight() / player:getMaxWeight()
-        if p > 1 then p = 1 end
-        return getPColor(color.green, color.red, p)
+        if p < 1 then 
+            return color.green
+        elseif p < 1.25 then
+            return getPColor(color.green, color.yellow, (p-1)/0.25)
+        elseif p < 1.5 then
+            return getPColor(color.yellow, color.red, (p-1.25)/0.25)
+        else
+            return color.red
+        end
     end
 
 }
@@ -310,7 +318,7 @@ local bars = {
     { name = "fatigue-v", title = getUIText("REST"), valueFn = valueFn.rest, ivalue = 100 },
     { name = "dirtiness-v", title = getUIText("CLEANLINESS"), type = "custom", textFn = textFn.cleanliness, colorFn = colorFn.cleanliness, percentFn = percentFn.cleanliness },
 
-    { name = "weight-capacity", title = getUIText("WEIGHT-CAPACITY"), type = "custom", textFn = textFn.weight_capacity, colorFn = colorFn.weight_capacity},
+    { name = "weight-capacity", title = getUIText("WEIGHT_CAPACITY"), type = "custom", textFn = textFn.weight_capacity, colorFn = colorFn.weight_capacity},
     -- may not used in game ?
     -- {name = "fear", title = getUIText("FEAR"), valueFn = valueFn.fear, ivalue = 0, shown = false},
 
@@ -366,6 +374,7 @@ local bars = {
 }
 for _, bar in ipairs(bars) do
     SimpleStatus:addBar(bar)
+    load_mod_comp()
 end
 
 local function showss()

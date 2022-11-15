@@ -31,7 +31,9 @@ IGUI_EN = {
     IGUI_SS_BARTITLE_TOG_FATIGUE = "Toggle Fatigue/Rest",
     IGUI_SS_BARTITLE_TOG_DIRTINESS = "Toggle Dirtiness/Cleanliness",
 
-    IGUI_SS_BARTITLE_WEIGHT-CAPACITY = "Weight-Capacity",
+    IGUI_SS_BARTITLE_WEIGHT_CAPACITY = "Weight-Capacity",
+
+    IGUI_SS_BARTITLE_MOD_URINATION_U = "Urination",
 
 
 }

@@ -30,4 +30,10 @@ IGUI_FR = {
     IGUI_SS_BARTITLE_TOG_HAPPY = "Activer Bonheur/Malheur",
     IGUI_SS_BARTITLE_TOG_FATIGUE = "Activer Fatigue/Repos",
     IGUI_SS_BARTITLE_TOG_DIRTINESS = "Activer Saleté/Propreté",
+
+    IGUI_SS_BARTITLE_WEIGHT_CAPACITY = "Capacité-Charge",
+ 
+    IGUI_SS_BARTITLE_MOD_URINATION_U = "Urination",
+
+    
 }
